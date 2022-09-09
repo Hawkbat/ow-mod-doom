@@ -13,7 +13,7 @@ Use this project as a base for new Outer Wilds mods.
   - [uniqueName](#uniquename)
   - [version](#version)
   - [owmlVersion](#owmlversion)
-- [Editing ModTemplate.csproj.user](#editing-modtemplatecsprojuser)
+- [Editing Doom.csproj.user](#editing-Doomcsprojuser)
 - [Updating OWML](#updating-owml)
 - [Building the mod](#building-the-mod)
 - [Releasing the mod](#releasing-the-mod)
@@ -37,20 +37,20 @@ Use this project as a base for new Outer Wilds mods.
 
 1. [Generate your repository from this template](https://github.com/ow-mods/ow-mod-template/generate);
 2. Clone your new repository to your machine;
-3. Edit `ModTemplate/manifest.json` (see [Editing manifest.json](#editing-manifestjson) for more info);
-4. Edit `ModTemplate/ModTemplate.csproj.user` (see [Editing ModTemplate.csproj.user](#editing-modtemplatecsprojuser) for more info);
-5. Open `ModTemplate.sln` in Visual Studio (double clicking the `.sln` file should do the trick);
-6. Start writing your mod code in `ModTemplate/ModTemplate.cs` ([Read OWML's docs to learn what you can do](https://github.com/amazingalek/owml/wiki/For-modders)).
+3. Edit `Doom/manifest.json` (see [Editing manifest.json](#editing-manifestjson) for more info);
+4. Edit `Doom/Doom.csproj.user` (see [Editing Doom.csproj.user](#editing-Doomcsprojuser) for more info);
+5. Open `Doom.sln` in Visual Studio (double clicking the `.sln` file should do the trick);
+6. Start writing your mod code in `Doom/Doom.cs` ([Read OWML's docs to learn what you can do](https://github.com/amazingalek/owml/wiki/For-modders)).
 7. [Build the mod](#building-the-mod);
 8. [Release the mod](#releasing-the-mod);
 
 ## Editing manifest.json
 
-Use any text editor for editing this file (Notepad or whatever). The file `ModTemplate/manifest.json` should look like this:
+Use any text editor for editing this file (Notepad or whatever). The file `Doom/manifest.json` should look like this:
 
 ```json
 {
-  "filename": "ModTemplate.dll",
+  "filename": "Doom.dll",
   "author": "AUTHOR",
   "name": "MOD_NAME",
   "uniqueName": "MOD_UNIQUE_NAME",
@@ -63,7 +63,7 @@ Edit each entry with the correct information for your mod:
 
 #### fileName
 
-Visual Studio will use the project's name for the dll, so this will usually be `[ProjectName].dll`. Since this template's project name is `ModTemplate`, `fileName` will be `ModTemplate.dll`. Remember that if you change your project's name, you'll have to change this entry too.
+Visual Studio will use the project's name for the dll, so this will usually be `[ProjectName].dll`. Since this template's project name is `Doom`, `fileName` will be `Doom.dll`. Remember that if you change your project's name, you'll have to change this entry too.
 
 #### author
 
@@ -85,9 +85,9 @@ The version number of the mod. It's important that this version number is consis
 
 OWML version used for your mod. Only used to show a warning to users using an OWML version different than this. Just make sure that the version here is the one installed in the NuGet packages (see [Updating OWML](#updating-owml) for more info);
 
-## Editing ModTemplate.csproj.user
+## Editing Doom.csproj.user
 
-Use any text editor for editing this file (Notepad or whatever). The file `ModTemplate/ModTemplate.csproj.user` should look like this:
+Use any text editor for editing this file (Notepad or whatever). The file `Doom/Doom.csproj.user` should look like this:
 
 ```xml
 <Project>
@@ -99,7 +99,7 @@ Use any text editor for editing this file (Notepad or whatever). The file `ModTe
 
 Here you can replace `OUTPUT_PATH` with the path where your mod files will live.
 
-Example: `$(AppData)\OuterWildsModManager\OWML\Mods\Raicuparta.ModTemplate`.
+Example: `$(AppData)\OuterWildsModManager\OWML\Mods\Raicuparta.Doom`.
 
 To make your mod automatically show up in the Outer Wilds Mod Manager every time you build it, follow the format `{MODS_DIRECTORY}/{MOD_UNIQUE_NAME}`.
 
@@ -115,7 +115,7 @@ It's important to keep OWML up to date in your project. In Visual Studio's Solut
 
 ## Building the mod
 
-Before attempting to build the mod, make sure you've edited [ModTemplate.csproj.user](#editing-modtemplatecsprojuser), and [manifest.json](#editing-manifestjson) with the correct info. After that's done, go to Visual Studio, open the "Build" menu at the top, and select "Build Solution". If all goes well, your mod should immediately show up the the Mod Manager. You can now press "Start Game" in the manager, and the game should start with your mod enabled (as long as your mod has the checkbox set to enabled).
+Before attempting to build the mod, make sure you've edited [Doom.csproj.user](#editing-Doomcsprojuser), and [manifest.json](#editing-manifestjson) with the correct info. After that's done, go to Visual Studio, open the "Build" menu at the top, and select "Build Solution". If all goes well, your mod should immediately show up the the Mod Manager. You can now press "Start Game" in the manager, and the game should start with your mod enabled (as long as your mod has the checkbox set to enabled).
 
 ## Releasing the mod
 
@@ -149,7 +149,7 @@ To make your mod show up in the Mod Manager and in [outerwildsmods.com](https://
 
 A NuGet package called `OuterWildsGameLibs` is used to get references to the game code. If a game update has been released and this nuget hasn't been updated yet, you might need to reference the game libraries manually. [More information on the ow-game-libs repo](https://github.com/ow-mods/ow-game-libs).
 
-If you open `ModTemplate/ModTemplate.csproj`, you'll find references to `$(OwmlDir)` and `$(ModUniqueName)`. The value of these variables is read from `ModTemplate/ModTemplate.csproj.user`.
+If you open `Doom/Doom.csproj`, you'll find references to `$(OwmlDir)` and `$(ModUniqueName)`. The value of these variables is read from `Doom/Doom.csproj.user`.
 
 `$(OwmlDir)` and `$(ModUniqueName)` are used in the post-build events, to copy the built mod files (and static files like `manifest.json` and `default-config.json`) to the mod directory in `"$(OwmlDir)\Mods\$(ModUniqueName)"`. If you are having problems with post-build events, you can edit them manually in Visual Studio (double click Properties in Solution Explorer, select "Build Events").
 

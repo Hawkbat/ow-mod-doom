@@ -1,0 +1,9 @@
+{
+  "$schema": "https://raw.githubusercontent.com/amazingalek/owml/master/schemas/manifest_schema.json",
+  "filename": "Doom.dll",
+  "author": "Hawkbar",
+  "name": "DOOM",
+  "uniqueName": "Hawkbar.Doom",
+  "version": "0.1.0",
+  "owmlVersion": "2.6.0"
+}
