@@ -587,6 +587,7 @@ namespace ManagedDoom.Unity
 
                 audioSource = new GameObject().AddComponent<AudioSource>();
                 audioSource.gameObject.name = "Doom_Sound";
+                audioSource.gameObject.layer = unityContext.Root.gameObject.layer;
                 audioSource.transform.SetParent(unityContext.Root, false);
                 audioSource.spatialBlend = 1f;
                 unityContext.SoundSources.Add(audioSource);
@@ -625,6 +626,7 @@ namespace ManagedDoom.Unity
 
             public void Play()
             {
+                audioSource.Stop();
                 audioSource.clip = SoundBuffer.GetAudioClip();
                 audioSource.Play();
             }

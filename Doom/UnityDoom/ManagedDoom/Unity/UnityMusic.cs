@@ -212,6 +212,7 @@ namespace ManagedDoom.Unity
                 {
                     leftAudioSource = new GameObject().AddComponent<AudioSource>();
                     leftAudioSource.gameObject.name = "Doom_Music_L";
+                    leftAudioSource.gameObject.layer = parent.unityContext.Root.gameObject.layer;
                     leftAudioSource.transform.SetParent(parent.unityContext.Root, false);
                     leftAudioSource.transform.localPosition = Vector3.left;
                     leftAudioSource.clip = audioClip;
@@ -224,6 +225,7 @@ namespace ManagedDoom.Unity
                 {
                     rightAudioSource = new GameObject().AddComponent<AudioSource>();
                     rightAudioSource.gameObject.name = "Doom_Music_R";
+                    rightAudioSource.gameObject.layer = parent.unityContext.Root.gameObject.layer;
                     rightAudioSource.transform.SetParent(parent.unityContext.Root, false);
                     rightAudioSource.transform.localPosition = Vector3.right;
                     rightAudioSource.clip = audioClip;
@@ -232,6 +234,8 @@ namespace ManagedDoom.Unity
                     rightAudioSource.panStereo = 1f;
                     parent.unityContext.MusicSources.Add(rightAudioSource);
                 }
+                leftAudioSource.Stop();
+                rightAudioSource.Stop();
                 leftAudioSource.Play();
                 rightAudioSource.Play();
             }

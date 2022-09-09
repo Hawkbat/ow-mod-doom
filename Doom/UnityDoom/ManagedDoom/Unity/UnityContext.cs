@@ -17,5 +17,6 @@ namespace ManagedDoom.Unity
         public List<AudioSource> SoundSources;
         public List<AudioClip> MusicClips;
         public List<AudioSource> MusicSources;
+        public bool AllowInput;
     }
 }

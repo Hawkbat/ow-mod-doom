@@ -9,6 +9,8 @@ namespace ManagedDoom.Unity
 {
     public sealed class UnityUserInput : IUserInput, IDisposable
     {
+        public UnityContext unityContext;
+
         public Config config;
 
         private bool useMouse;
@@ -125,13 +127,14 @@ namespace ManagedDoom.Unity
             { DoomKey.Pause, Key.Pause },
         };
 
-        public UnityUserInput(Config config, bool useMouse)
+        public UnityUserInput(Config config, bool useMouse, UnityContext unityContext)
         {
             try
             {
                 Logger.Log("Initialize user input: ");
 
                 this.config = config;
+                this.unityContext = unityContext;
 
                 config.mouse_sensitivity = Math.Max(config.mouse_sensitivity, 0);
 
@@ -162,6 +165,7 @@ namespace ManagedDoom.Unity
         public Queue<DoomEvent> GenerateEvents()
         {
             inputEvents.Clear();
+            if (!unityContext.AllowInput) return inputEvents;
             foreach (var pair in keyMapping)
             {
                 if (pair.Key == DoomKey.Unknown) continue;
@@ -328,9 +332,10 @@ namespace ManagedDoom.Unity
 
         private bool IsPressed(KeyBinding keyBinding)
         {
+            if (!unityContext.AllowInput) return false;
             foreach (var key in keyBinding.Keys)
             {
-                if (Keyboard.current[keyMapping[key]].isPressed)
+                if (IsKeyPressed(key))
                 {
                     return true;
                 }
@@ -349,6 +354,12 @@ namespace ManagedDoom.Unity
             }
 
             return false;
+        }
+
+        private bool IsKeyPressed(DoomKey key)
+        {
+            if (!unityContext.AllowInput) return false;
+            return Keyboard.current[keyMapping[key]].isPressed;
         }
 
         public void Reset()

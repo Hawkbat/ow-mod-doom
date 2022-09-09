@@ -23,6 +23,17 @@ namespace ManagedDoom.Unity
 
         private float updateTime;
 
+        public bool AllowInput {
+            get => unityContext.AllowInput;
+            set => unityContext.AllowInput = value;
+        }
+
+        public bool Visible
+        {
+            get => unityContext.Renderer.enabled;
+            set => unityContext.Renderer.enabled = value;
+        }
+
         public UnityDoom(CommandLineArgs args, Transform parent)
         {
             try
@@ -40,6 +51,7 @@ namespace ManagedDoom.Unity
 
                 var go = new GameObject("Doom");
                 go.transform.SetParent(parent, false);
+                go.layer = parent.gameObject.layer;
 
                 unityContext = new UnityContext();
                 unityContext.Root = go.transform;
@@ -66,7 +78,7 @@ namespace ManagedDoom.Unity
                     }
                 }
 
-                userInput = new UnityUserInput(config, !args.nomouse.Present);
+                userInput = new UnityUserInput(config, !args.nomouse.Present, unityContext);
 
                 doom = new Doom(args, config, content, video, sound, music, userInput);
             }
@@ -77,13 +89,13 @@ namespace ManagedDoom.Unity
             }
         }
 
-        public bool Run()
+        public bool Run(float deltaTime)
         {
             var inputEvents = userInput.GenerateEvents();
             while (inputEvents.Count > 0) doom.PostEvent(inputEvents.Dequeue());
 
             float frameDuration = 1f / 35f;
-            updateTime += Time.deltaTime;
+            updateTime += deltaTime;
             if (updateTime > frameDuration)
             {
                 updateTime %= frameDuration;

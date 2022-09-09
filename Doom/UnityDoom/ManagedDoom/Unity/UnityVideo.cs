@@ -51,6 +51,7 @@ namespace ManagedDoom.Unity
                 go.name = "Doom_Video";
                 go.transform.localEulerAngles = Vector3.forward * -90f;
                 go.transform.localScale = new Vector3(3f / 4f, 1f, 1f);
+                go.layer = unityContext.Root.gameObject.layer;
                 UnityEngine.Object.Destroy(go.GetComponent<Collider>());
                 meshRenderer = go.GetComponent<MeshRenderer>();
 
