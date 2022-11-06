@@ -13,8 +13,6 @@ namespace Doom
         public UnityDoom DoomGame;
 
         DoomShipLogMode doomMode;
-        ShipLogController shipLog;
-        ScreenPrompt doomPrompt;
 
         private void Start()
         {
@@ -50,8 +48,6 @@ namespace Doom
             {
                 var refTransform = GameObject.Find("Ship_Body/Module_Cabin/Systems_Cabin/ShipLogPivot/ShipLog/ShipLogPivot/ShipLogCanvas").transform;
 
-                shipLog = refTransform.gameObject.GetComponentInParent<ShipLogController>();
-
                 var go = new GameObject("ShipLogDoom");
                 doomMode = go.AddComponent<DoomShipLogMode>();
                 go.transform.SetParent(refTransform.parent, false);
@@ -61,28 +57,16 @@ namespace Doom
                 go.transform.position += -go.transform.forward * 0.001f;
                 go.layer = LayerMask.NameToLayer("UI");
 
-                doomPrompt = new ScreenPrompt(InputLibrary.markEntryOnHUD, "DOOM", 0, ScreenPrompt.DisplayState.Normal, false);
-                Locator.GetPromptManager().AddScreenPrompt(doomPrompt, shipLog._upperRightPromptList, TextAnchor.MiddleRight, -1, true);
-
                 DoomGame = new UnityDoom(new CommandLineArgs(new string[0]), go.transform);
 
-                doomMode.Initialize(null, null, null);
+                var customModesAPI = ModHelper.Interaction.TryGetModApi<ICustomShipLogModesAPI>("dgarro.CustomShipLogModes");
+                customModesAPI.AddMode(doomMode, () => true, () => "DOOM");
             });
         }
 
         private void Update()
         {
             if (DoomGame != null) DoomGame.Run(Time.unscaledDeltaTime);
-            if (shipLog && OWInput.GetInputMode() == InputMode.ShipComputer)
-            {
-                doomPrompt.SetVisibility(shipLog._currentMode == shipLog._mapMode);
-                if (doomMode && shipLog._currentMode == shipLog._mapMode && OWInput.IsPressed(InputLibrary.markEntryOnHUD, InputMode.All))
-                {
-                    shipLog._currentMode.ExitMode();
-                    shipLog._currentMode = doomMode;
-                    shipLog._currentMode.EnterMode();
-                }
-            }
         }
 
         public void Focus()
