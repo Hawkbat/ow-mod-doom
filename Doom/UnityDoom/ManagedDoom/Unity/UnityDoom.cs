@@ -34,6 +34,14 @@ namespace ManagedDoom.Unity
             set => unityContext.Renderer.enabled = value;
         }
 
+        public int Volume {
+            get => sound.Volume;
+            set {
+                sound.Volume = value;
+                music.Volume = value;
+            }
+        }
+
         public UnityDoom(CommandLineArgs args, Transform parent)
         {
             try

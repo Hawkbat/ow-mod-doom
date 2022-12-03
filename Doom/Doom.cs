@@ -14,11 +14,14 @@ namespace Doom
 
         DoomShipLogMode doomMode;
 
+        public bool MuteWhenNotPlaying;
+
         private void Start()
         {
             Instance = this;
 
             ConfigUtilities.OverrideExeDirectory = ModHelper.Manifest.ModFolderPath;
+            MuteWhenNotPlaying = ModHelper.Config.GetSettingsValue<bool>("Mute When Not Playing");
 
             GlobalMessenger.AddListener("EnterShipComputer", () =>
             {
@@ -35,6 +38,16 @@ namespace Doom
 
             LoadManager.OnCompleteSceneLoad += LoadManager_OnCompleteSceneLoad;
             ModHelper.Events.Player.OnPlayerAwake += Player_OnPlayerAwake;
+        }
+
+        public override void Configure(IModConfig config)
+        {
+            MuteWhenNotPlaying = config.GetSettingsValue<bool>("Mute When Not Playing");
+            if (DoomGame != null)
+            {
+                if (MuteWhenNotPlaying && !DoomGame.AllowInput) DoomGame.Volume = 0;
+                else DoomGame.Volume = 15;
+            }
         }
 
         private void LoadManager_OnCompleteSceneLoad(OWScene originalScene, OWScene loadScene)
@@ -58,6 +71,8 @@ namespace Doom
                 go.layer = LayerMask.NameToLayer("UI");
 
                 DoomGame = new UnityDoom(new CommandLineArgs(new string[0]), go.transform);
+                if (MuteWhenNotPlaying) DoomGame.Volume = 0;
+                else DoomGame.Volume = 15;
 
                 var customModesAPI = ModHelper.Interaction.TryGetModApi<ICustomShipLogModesAPI>("dgarro.CustomShipLogModes");
                 customModesAPI.AddMode(doomMode, () => true, () => "DOOM");
@@ -74,6 +89,7 @@ namespace Doom
             if (DoomGame == null) return;
             DoomGame.Visible = true;
             DoomGame.AllowInput = true;
+            DoomGame.Volume = 15;
         }
 
         public void Unfocus()
@@ -81,6 +97,7 @@ namespace Doom
             if (DoomGame == null) return;
             DoomGame.Visible = false;
             DoomGame.AllowInput = false;
+            if (MuteWhenNotPlaying) DoomGame.Volume = 0;
         }
     }
 }
