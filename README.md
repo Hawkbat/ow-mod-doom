@@ -2,9 +2,20 @@
 
 But can your ship run DOOM? Yes, yes it can.
 
-![A screenshot of the fact log interface](Screenshot.jpg)
+![A screenshot of DOOM on the ship computer](Screenshot.jpg)
 
-Adds a playable copy of DOOM to the ship computer. To play, press the flashlight key while on the ship log and select the DOOM mode.
+Adds a playable copy of DOOM to the ship computer. To play, select the DOOM mode in ship log.
+
+## Controls
+
+| Control | Input |
+| ------- | ----- |
+| Turn | Left Arrow / Right Arrow |
+| Move | Up Arrow / Down Arrow |
+| Strafe Left | Alt + Left Arrow / Right Arrow |
+| Shoot | Ctrl |
+| Interact | Spacebar |
+| Menu | Enter/Return |
 
 ## Contribution
 

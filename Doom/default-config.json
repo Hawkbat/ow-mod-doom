@@ -1,3 +1,6 @@
 {
-  "enabled": true
+  "enabled": true,
+  "settings": {
+    "Mute When Not Playing": true
+  }
 }
